@@ -14,5 +14,6 @@ The project consumes data from the **OpenWeatherMap API** ([https://openweatherm
 The ETL currently retrieves data for a predefined list of cities, with potential to expand globally.
 
 **Author: Beatriz Barcelos**
+
 Date: 2025
 
