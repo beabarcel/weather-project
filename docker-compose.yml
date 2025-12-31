@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: weather_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: weather_db
+      POSTGRES_USER: weather_user
+      POSTGRES_PASSWORD: weather_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  etl:
+    build:
+      context: ./etl
+    command: python test_db_connection.py
+    depends_on:
+      postgres:
+        condition: service_started
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: weather_db
+      DB_USER: weather_user
+      DB_PASSWORD: weather_pass
+
+volumes:
+  postgres_data:
