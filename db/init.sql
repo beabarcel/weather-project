@@ -4,7 +4,10 @@ CREATE TABLE IF NOT EXISTS cities (
     country VARCHAR(50) NOT NULL,
     latitude NUMERIC(9,6),
     longitude NUMERIC(9,6),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT uq_city_name_country
+        UNIQUE (name, country)
 );
 
 CREATE TABLE IF NOT EXISTS weather_readings (
@@ -19,7 +22,10 @@ CREATE TABLE IF NOT EXISTS weather_readings (
     CONSTRAINT fk_weather_city
         FOREIGN KEY (city_id)
         REFERENCES cities(id)
-        ON DELETE CASCADE
+        ON DELETE CASCADE,
+
+    CONSTRAINT uq_city_collected_at
+        UNIQUE (city_id, collected_at)
 );
 
 CREATE INDEX IF NOT EXISTS idx_weather_city_date
@@ -36,7 +42,10 @@ CREATE TABLE IF NOT EXISTS alerts (
     CONSTRAINT fk_alert_city
         FOREIGN KEY (city_id)
         REFERENCES cities(id)
-        ON DELETE CASCADE
+        ON DELETE CASCADE,
+
+    CONSTRAINT uq_alert_unique
+        UNIQUE (city_id, alert_type, created_at)
 );
 
 CREATE INDEX IF NOT EXISTS idx_alert_city_date
